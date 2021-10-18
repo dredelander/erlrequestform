@@ -212,7 +212,7 @@ def billedcomplete(request):
 @login_required
 def seach_results(request):
     query = request.GET.get('q')
-    todos = Todos.objects.filter((Q(part__icontains=query) or Q(description__icontains=query)), datecompleted__isnull=False).order_by('-datecompleted')
+    todos = Todos.objects.filter(Q(part__icontains=query) | Q(description__icontains=query), datecompleted__isnull=False).order_by('-datecompleted')
     
     if todos.count() == 0:
         return redirect('no_results')
