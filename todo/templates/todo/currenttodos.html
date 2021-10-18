@@ -1,0 +1,40 @@
+
+
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10 text-center">
+            {% if todos %}
+                 <h2>{{ todos.count }} Pending Order Request{{ todos.count|pluralize }}</h2>
+            {% else %}
+                           <h2>No Pending Order Requests</h2>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if todos %}
+            <div class="list-group">
+                {% for todo in todos %}
+                    <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action{% if todo.rush %} list-group-item-danger{% endif %}"><b>{{todo.part}}</b>{% if todo.description %} - 
+                        {{ todo.description|truncatechars:30 }} {% endif %} -    <b>Quantity: </b>{{todo.qty}} -    <b>Need By: </b>{{todo.duedate}} 
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
+                            
+                            
+                            <button href="{% url 'viewtodo' todo.id %}" class="btn btn-warning me-md-2">Revise Request</button>
+                        
+                        </div></a>
+                        <br>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h3>Looks like you don't have any open order requests! </h3>
+            <br>
+            <a role="button" class="btn btn-primary" href="{% url 'createtodo' %}">New Order Request</a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock content %}

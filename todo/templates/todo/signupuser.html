@@ -1,0 +1,44 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+<br>
+
+<h5 class="display-5">Create an account to get started!</h5>
+<br>
+
+
+<h2>{{ error}} </h2>
+<!-- 
+<div class="mb-3">
+<form method='POST' action="">
+    {% csrf_token %}
+{{form.as_p}}
+<button type='submit'>Sign Up</button>
+</form> 
+</div> -->
+
+<form method='POST' action="">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_username" class="form-label">Enter your desired username:</label>
+      <input type="text" class="form-control"  required name="username" id="id_username" autocomplete="username">
+      <div id="emailHelp" class="form-text">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</div>
+    </div>
+    <div class="mb-3">
+      <label for="id_password1" class="form-label">Create a Password:</label>
+      <input type="password" class="form-control" name="password1" required id="id_password1" autocomplete="new-password">
+      <div id="passwordreq" class="form-text">
+        Your password can’t be too similar to your other personal information.
+        Your password must contain at least 8 characters.
+        Your password can’t be a commonly used password.
+        Your password can’t be entirely numeric.</div>
+    </div>
+    <div class="mb-3">
+        <label for="id_password2" class="form-label">Re-enter the created Password:</label>
+        <input type="password" class="form-control" name="password2"  required id="id_password2" autocomplete="new-password">
+      </div>
+    
+    <button type="submit" class="btn btn-primary ">Create Account</button>
+  </form> 
+
+ {% endblock %}

@@ -1,0 +1,63 @@
+<h1>Create Order Request</h1>
+
+<h2>{{ error}} </h2>
+
+<form method='POST' action="">
+
+    {% csrf_token %}
+
+{{form.as_p}}
+
+<button type='submit'>Submit Request</button>
+
+</form>
+
+
+
+{% block content %}
+
+Completed Todos:
+
+<ul>
+    {% for todo in todos %}
+    <li>
+        <a href="{% url 'viewtodo' todo.id %}">
+        {% if todo.rush %}<b>{% endif %}{{todo.part}}{% if todo.rush %}</b>{% endif %}
+        {% if todo.description %} {{todo.description}}{% endif%}
+
+        {{todo.datecompleted|date:'M j Y H:i'}}
+        </a>
+    </li>
+
+    {%endfor%}
+</ul>
+
+
+{% block content %}
+<br>
+
+{{todo.part}}
+
+<form method="POST">
+
+      {% csrf_token %}
+
+        {{form.as_p}}
+
+<button type='submit'>Save</button>
+
+</form>
+
+<form method="POST" action="{% url 'completetodo' todo.id %}">
+
+    {% csrf_token %}
+
+ <button type='submit'>Mark Complete</button>
+
+ <form method="POST" action="{% url 'deletetodo' todo.id %}">
+
+    {% csrf_token %}
+
+ <button type='submit'>Deletee</button>
+
+</form>

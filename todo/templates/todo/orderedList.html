@@ -1,0 +1,57 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            {% if page_obj %}
+                 <h2>{{ page_obj.count }} Completed Order Request{{ page_obj.count|pluralize }}</h2>
+            {% else %}
+                           <h2>No Pending Order Requests</h2>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if page_obj %}
+            <div class="list-group">
+                {% for todo in page_obj %}
+                    <div class="list-group-item list-group-item-action bg-success p-2 text-dark bg-opacity-25"><b>{{todo.part}}</b>{% if todo.description %} - 
+                        {{ todo.description|truncatechars:30 }} {% endif %} -    <b>Quantity: </b>{{todo.qty}} -    <b>Need By: </b>{{todo.duedate}} -------- Ordered on : {{ todo.datecompleted|date:'M j Y H:i' }}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
+                            
+                            Requested by <b>{{todo.user}}</b>
+                            <!-- <button href="{% url 'viewtodo' todo.id %}" class="btn btn-warning me-md-2">Revise Request</button> -->
+                        
+                        </div>
+                    </div>
+                    <br>
+                {% endfor %}
+                <br>
+            </div>
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; First</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h3>Looks like you don't have any open order requests! </h3>
+            <br>
+            <a role="button" class="btn btn-primary" href="{% url 'createtodo' %}">New Order Request</a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock content %}

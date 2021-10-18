@@ -1,0 +1,43 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+<br>
+<h5 class="display-5">Log In to get started!</h5>
+<br>
+
+<h2>{{ error}} </h2>
+
+
+<form method='POST' action="">
+
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_username" class="form-label">Enter your user name:</label>
+      <input type="text" class="form-control" name="username" autocomplete="username" id="id_username" maxlength="150" required>
+      
+    </div>
+    <div class="mb-3">
+      <label for="id_password" class="form-label">Enter your Password</label>
+      <input type="password" name="password" autocomplete="current-password" required class="form-control" id="id_password">
+    </div>
+   
+    <button type="submit" class="btn btn-primary">Log In!</button>
+  </form>
+
+
+
+<!-- <h1>Log In</h1>
+
+<h2>{{ error}} </h2>
+
+<form method='POST' action="">
+
+    {% csrf_token %}
+
+{{form.as_p}}
+
+<button type='submit'>Login</button>
+
+</form> -->
+
+ {% endblock %}

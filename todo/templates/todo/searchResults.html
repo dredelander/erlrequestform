@@ -1,0 +1,46 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+
+    <div class="col-md-10 text-center">
+        <h2>Search Results</h2>
+        <h5>Select a previous request to copy data onto a new request</h5>
+        <br>
+    </div>
+    {% for todo in page_obj %}
+
+    <div class="list-group ">
+        <a href="{% url 'repeat_request' todo.id %}" class="list-group-item list-group-item-action bg-success p-2 text-dark bg-opacity-25" aria-current="true">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ todo.part }}</h5>
+            <small><b>ORDERED ON: </b>{{ todo.datecompleted|date:'M j Y H:i' }}</small>
+          </div>
+          <p class="mb-1">{{todo.description}}</p>
+          <small><b>AMOUNT: </b>${{ todo.amount }} ---------- <b>REQUESTED BY:</b>{{todo.user}}</small>    {{ value|linebreaks }}       
+          <small><b>REFERENCE:</b>{{ todo.refnum }}</small>
+        </a>
+    </div>
+    <br>
+    {% endfor %}
+
+    <div class="pagination justify-content-center">
+      <span class="step-links">
+          {% if page_obj.has_previous %}
+              <a href="?page=1&q={{ query }}">&laquo; First</a>
+              <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">Previous</a>
+          {% endif %}
+  
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+  
+          {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">Next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">Last &raquo;</a>
+          {% endif %}
+      </span>
+  </div>
+  <br>
+
+
+{% endblock content %}

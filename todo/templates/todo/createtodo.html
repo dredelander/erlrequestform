@@ -1,0 +1,71 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+
+
+<div class="row justify-content-center mt-5">
+    <div class="">
+        <br>
+        <h2 class="text-center">New Order Request</h2>
+    </div>
+    <div class="col-md-5">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="part">Part #:</label>
+                <input type="text" name="part" class="form-control" id="part" required>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" class="form-control" id="description" placeholder="Include material, unit cost, size and any other pertaining info" required></textarea>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="qty">Quantity:</label>
+                <input type="number" name="qty" class="form-control" id="qty" required></input>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="vendor">Vendor:</label>
+                <textarea name="vendor" class="form-control" id="vendor" placeholder="Enter N/A or the name of a vendor(s)" required></textarea>
+            </div>
+            <br>
+            <div class="form-group form-check">
+                <input type="checkbox" name="toapprove" class="form-check-input" id="toapprove">
+                <label class="form-check-label" for="toapprove">Needs Approval</label>
+            </div>            
+            <br>
+            <div class="form-group form-check">
+                <input type="checkbox" name="tobill" class="form-check-input" id="tobill">
+                <label class="form-check-label" for="tobill">Needs Billed to Customer (Sales/Work order must be entered if checked)</label>
+            </div>            
+            <br>
+            <div class="form-group form-check">
+                <input type="checkbox" name="rush" class="form-check-input" id="rush">
+                <label class="form-check-label" for="rush">Rush</label>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="duedate">Need by:</label>
+                <input type="date" name="duedate" class="form-control" id="duedate" required></input>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="refnum">Reference:</label>
+                <textarea name="refnum" class="form-control" id="refnum" placeholder="Enter Stock, Barge # or Sales/Work Order #" required ></textarea>
+            </div>
+            <br>
+            <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">Submit Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+ {% endblock content %}

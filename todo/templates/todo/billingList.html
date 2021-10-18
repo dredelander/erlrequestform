@@ -1,0 +1,61 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            {% if page_obj %}
+                 <h2>{{ page_obj.count }} Pending Order{{ page_obj.count|pluralize }} to Bill</h2>
+            {% else %}
+                           <h2>No Pending Order to be billed</h2>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if page_obj %}
+            <div class="list-group">
+                {% for todo in page_obj %}
+                    <a class="list-group-item list-group-item-action{% if todo.tobill %} list-group-item-warning{% endif %}"><b>{{todo.part}}</b>{% if todo.description %} - 
+                        {{ todo.description|truncatechars:30 }} {% endif %} -    <b>Quantity: </b>{{todo.qty}} -    <b>Ordered on: </b>{{todo.datecompleted|date:'M j Y H:i'}} 
+                     
+                        <b>            ---------- Total Product Cost / Amount to Bill: </b>${{todo.amount}}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
+                            
+                            <form method = 'POST' action="{% url 'markbilled' todo.id %}">
+                                {% csrf_token %}
+                            <button type="submit" class="btn btn-warning me-md-2">Mark as Billed to Customer</button>
+                            </form>
+                        </div></a>
+                        <br>
+                {% endfor %}
+            </div>
+
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1&q={{ query }}">&laquo; First</a>
+                        <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">Previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">Next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+
+
+        {% else %}
+            <div class="text-center">
+                <h3>Looks like you don't have ane pending orders to bill to customers! </h3>
+            <br>
+            <!-- <a role="button" class="btn btn-primary" href="{% url 'createtodo' %}">New Order Request</a> -->
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            {% if page_obj %}
+                 <h2>{{ page_obj.count }} Pending Order Request{{ page_obj.count|pluralize }}</h2>
+            {% else %}
+                           <h2>No Pending Order Requests</h2>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    
+        
+        {% if page_obj %}
+            
+                {% for todo in page_obj %}
+            <div class="card border-secondary mb-3" style="max-width: 50rem;">
+                <div class="card-header">
+                    <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action{% if todo.rush %} list-group-item-warning{% endif %}"><b>{{todo.part}}</b>{% if todo.description %} - 
+                        {{ todo.description|truncatechars:30 }} {% endif %} -    <b>Quantity: </b>{{todo.qty}} -    <b>Need By: </b>{{todo.duedate}} <b>Requested by:</b> {{todo.user}}
+                        <b>Vendor: </b>{{todo.vendor}}
+                    </a>
+                </div>
+              <div class="card-body text-secondary bg-dark bg-opacity-10"> 
+                        <form method = 'POST' action="{% url 'markordered' todo.id %}">
+                            {% csrf_token %}
+                            <label for="amount">Total Amount</label>
+                            <input style="max-width: 10rem;" type="currency" name="amount" class="form-control" id="amount" ></input>
+                            <br>
+                        <button type="submit" class="btn btn-secondary">Mark as Ordered</button>
+                        </form>
+                </div>
+                          
+           </div>
+           <br>
+            {% endfor %}
+
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1&q={{ query }}">&laquo; First</a>
+                        <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">Previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">Next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+
+        {% else %}
+            <div class="text-center">
+                <h3>Looks like you don't have any open order requests! </h3>
+            <br>
+            <!-- <a role="button" class="btn btn-primary" href="{% url 'createtodo' %}">New Order Request</a> -->
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock content %}
