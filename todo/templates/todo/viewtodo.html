@@ -16,7 +16,7 @@
                     {{ error }}
                 </div>
             {% endif %}
-            <form method="POST" action="{% url 'reviserequest' todo.id  %}">
+            <form method="POST" action="{% url 'reviserequest' todo.id %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="part">Part #:</label>
@@ -64,25 +64,30 @@
                     <label for="refnum">Reference:</label>
                     <textarea name="refnum" class="form-control" id="refnum" required >{{todo.refnum}}</textarea>
                 </div>
+                
                 <br>
-                {% if user.username == todo.user %}
-                <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
-                </div>
+                {% if todo.datecompleted is None and user.username|stringformat:"i" == todo.user|stringformat:"i" %}
+
+                <div class="row justify-content-center mt-5">
+               
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning" >Save Changes</button>
+                
                 {% endif %}
-            </form>
-                <br>
-                <br>
+            </div>
+        </form>
+            
+               
               
                 <!--<button type="button" class="btn btn-success" onclick="$('#complete').click()">Ordered</button>
                 <button type="button" class="btn btn-danger" onclick="$('#delete').click()">Delete Request</button> -->
-            </form>
-        </div>
+         
+        
     </div>
-    {% if todo.datecompleted is None and user.username == todo.user  %}
+    <!-- {% if todo.datecompleted is None and user.username|stringformat:"i" == todo.user|stringformat:"i" %}
 
     <div class="row justify-content-center mt-5">
-    <!-- <form class="text-center" method="POST" action="{% url 'reviserequest' todo.id %}">
+    <form class="text-center" method="POST" action="{% url 'reviserequest' todo.id %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-warning" >Save Changes</button>
     </form> -->
@@ -94,15 +99,17 @@
     
      <button class="btn btn-success" type='submit'>Ordered</button> -->
      
-    
+     <div class="row justify-content-center mt-5">
      <form class="text-center" method="POST" action="{% url 'deletetodo' todo.id %}">
     
         {% csrf_token %}
     
-     <button class="btn btn-danger" type='submit'>Delete Request</button>
+     <button class="btn btn-danger" style="max-width: 30rem;" type='submit'>Delete Request</button>
          
     </form>
     </div>
+    <br>
+    <br>
     {% else %}
 
     <div class="text-center"><b>Ordered on:  </b>{{todo.datecompleted|date:'M j Y H:i'}}</div>

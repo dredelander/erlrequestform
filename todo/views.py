@@ -86,6 +86,7 @@ def createtodo(request):
 @login_required
 def viewtodo(request, todo_pk):
     todo = get_object_or_404(Todos, pk =todo_pk)
+    user = get_object_or_404(User, username = todo.user)
     if request.method == 'GET':
         form = TodoForm(instance=todo)
         return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form})
@@ -97,7 +98,7 @@ def viewtodo(request, todo_pk):
             return redirect('currenttodos')
         except ValueError:
 
-            return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'error': 'One or more fields has bad data'})
+            return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'error': 'One or more fields has bad data', 'user':user})
 @login_required
 def completetodo(request, todo_pk):
     todo = get_object_or_404(Todos, pk =todo_pk, user=request.user)
@@ -123,23 +124,25 @@ def completedtodos(request):
 
 @login_required
 def reviserequest(request,todo_pk):
-    todo = get_object_or_404(Todos, pk =todo_pk, user=request.user)
+    todo = get_object_or_404(Todos, pk =todo_pk)
+ 
     if request.method == 'GET':
         form = TodoForm(instance=todo)
+        
         return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form})
     else:
         try:
-            form = TodoForm(request.POST, instance =todo)
+            form = TodoForm(request.POST,  instance=todo)
+ 
             form.save()
-            
+                        
             return redirect('currenttodos')
         except ValueError:
 
             return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'error': 'One or more fields has bad data'})
     # if request.method == 'POST':
-    #     form = TodoForm(request.POST, instance =todo)
+    #     form = TodoForm(request.POST, instance=todo)
     #     form.save()
-        
     #     return redirect('currenttodos')
 
 @login_required
