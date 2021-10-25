@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.center {
+  margin: auto;
+  width: 60%;
+  
+  padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<h2>QR code for: {{todo.part}}</h2>
+<p>Print in vertical format</p>
+
+<div class="center">
+    <img src={{qr.qr_code.url}}>
+    <h2 style="text-align: justify;" >{{todo.part}}</h2>
+</div>
+
+</body>
+</html>

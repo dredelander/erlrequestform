@@ -1,5 +1,5 @@
-import re
-from todo.models import Todos
+
+from todo.models import QRCode, Todos
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
 from django.core.paginator import Paginator
+from .helpers import WEB_ADD
 
 def email_check(user):
     return (user.email.startswith('megan') | user.email.startswith('andres'))
@@ -241,3 +242,25 @@ def repeat_request(request, todo_pk):
             return redirect('currenttodos')
         except ValueError:
             return render (request, 'todo/repeatRequest.html', {'form': TodoForm(), 'error': 'One or more fields has bad data'})
+
+
+def qr_view(request, todo_pk):
+    todo = get_object_or_404(Todos, pk =todo_pk)
+    
+    if not QRCode.objects.filter(item = todo.pk).exists():
+    # if not QRCode.objects.filter(item = todo.part):
+        qr = QRCode(item= Todos.objects.get(pk = todo_pk))
+        address = (WEB_ADD + str(todo_pk))
+        qr.save(address)
+        return render(request, 'todo/qr_image.html', {'qr': qr, 'todo': todo})
+
+    else:
+        print('This item already has a QR code')
+        qr = QRCode.objects.get(item = todo.pk)
+        return render(request, 'todo/qr_already.html', {'qr': qr, 'todo': todo})
+
+
+    # name = todo.part
+    # print(todo_pk)
+    
+    # return render(request, 'todo/qr_image.html', {'name': name, 'todo': todo})

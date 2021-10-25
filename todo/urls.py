@@ -2,6 +2,8 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -65,4 +67,10 @@ urlpatterns = [
     # Results View (NO Results)
     path('noResults/',views.noResults, name ='no_results' ),
 
+    
+    # Results View (NO Results)
+    path('qrcode/<int:todo_pk>/',views.qr_view, name='qr_view' ),
+
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
